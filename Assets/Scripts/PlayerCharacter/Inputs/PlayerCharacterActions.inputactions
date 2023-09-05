@@ -1,23 +1,23 @@
 {
-    "name": "PlayerControls",
+    "name": "PlayerCharacterActions",
     "maps": [
         {
-            "name": "Player",
-            "id": "ea899349-73b9-4d6c-904a-9604cd9547ca",
+            "name": "Player Character",
+            "id": "a38f53da-ac00-460d-987c-0c75f545d3a3",
             "actions": [
                 {
                     "name": "Jump",
                     "type": "Button",
-                    "id": "ce73bcf6-df46-4c5b-bd84-0ec9824f45af",
+                    "id": "7224d404-3793-462f-8c75-5b3675366af4",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Movement",
+                    "name": "Move",
                     "type": "Value",
-                    "id": "74f763f9-4c56-45bc-9946-1d44dcdc4c9e",
+                    "id": "cf92740d-822b-4577-a3b4-c82cd3584038",
                     "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
@@ -27,45 +27,45 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "929422b5-ab6e-4d4b-9855-949f463d6a7f",
+                    "id": "abeae8ec-60be-479f-b044-7d5160761307",
                     "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Clavier",
+                    "groups": "Keyboard & Mouse",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "Horizontal",
-                    "id": "1017809b-df58-4b41-9ca0-b39541c38c9f",
+                    "name": "1D Axis",
+                    "id": "88a4de7c-ddce-41a1-ac1e-26185f7d99b8",
                     "path": "1DAxis",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Movement",
+                    "action": "Move",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "negative",
-                    "id": "af27751a-adaf-4a18-8e39-f7c98d5173a1",
+                    "id": "73574453-a5b8-47cc-8efd-a3da124c76bb",
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Clavier",
-                    "action": "Movement",
+                    "groups": "Keyboard & Mouse",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "positive",
-                    "id": "4a23c155-f729-41c6-8251-f258a7c5df32",
+                    "id": "103171b1-6ab5-45c8-8568-55a5c721ed51",
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Clavier",
-                    "action": "Movement",
+                    "groups": "Keyboard & Mouse",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }
@@ -74,8 +74,8 @@
     ],
     "controlSchemes": [
         {
-            "name": "Clavier",
-            "bindingGroup": "Clavier",
+            "name": "Keyboard & Mouse",
+            "bindingGroup": "Keyboard & Mouse",
             "devices": [
                 {
                     "devicePath": "<Keyboard>",
