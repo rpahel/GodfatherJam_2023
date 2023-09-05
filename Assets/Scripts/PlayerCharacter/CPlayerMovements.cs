@@ -13,15 +13,15 @@ public class CPlayerMovements : MonoBehaviour
 
     private float MovementInput { get; set; }
     private Rigidbody2D rb2D;
-    private CapsuleCollider2D capsuleCollider;
+    private CircleCollider2D circleCollider;
 
     private void Awake()
     {
         if (!TryGetComponent(out rb2D))
             Debug.LogError("No RigidBody2D found in " + name + " !");
 
-        if (!TryGetComponent(out capsuleCollider))
-            Debug.LogError("No CapsuleCollider2D found in " + name + " !");
+        if (!TryGetComponent(out circleCollider))
+            Debug.LogError("No CircleCollider found in " + name + " !");
     }
 
     private void Update()
@@ -29,7 +29,7 @@ public class CPlayerMovements : MonoBehaviour
         if (!rb2D)
             return;
 
-        if(!capsuleCollider)
+        if(!circleCollider)
             return;
 
         if (MovementInput != 0 && Mathf.Abs(rb2D.velocity.x) < maxMovementSpeed)
@@ -49,17 +49,13 @@ public class CPlayerMovements : MonoBehaviour
 
     private bool IsGrounded()
     {
-        // Milieu de la partie arrondie a la base de la capsule
-        Vector2 origin = (Vector2)capsuleCollider.bounds.center
-                            + capsuleCollider.size.y * 0.5f * Vector2.down
-                            + capsuleCollider.size.x * 0.5f * Vector2.up;
-
-        // Petit raycast en forme de cercle vers le sol pcq notre perso est une capsule, si ca touche return true
+        Vector2 origin = (Vector2)circleCollider.bounds.center;
+                          
         if (Physics2D.CircleCast(
                     origin: origin,
-                    radius: capsuleCollider.size.x * 0.5f,
+                    radius: circleCollider.radius * 0.5f,
                     direction: Vector2.down,
-                    distance:  capsuleCollider.size.x * 0.5f + 0.1f,
+                    distance: circleCollider.radius * 0.5f + 0.1f,
                     layerMask: LayerMask.GetMask("Carpet")))
             return true;
 
