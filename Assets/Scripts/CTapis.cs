@@ -5,7 +5,7 @@ using UnityEngine;
 public class CTapis : MonoBehaviour
 {
     private float m_speed = 10.0f;
-    private bool m_senseOfRotation = true;
+    private bool m_senseOfRotation = true;// true = right
     // Start is called before the first frame update
     void Start()
     {
