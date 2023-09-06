@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class CPlayerInputs : MonoBehaviour
 {
     private CPlayerMovements cPlayerMovements;
+    private bool isControlsEnabled;
 
     private void Awake()
     {
@@ -18,6 +19,9 @@ public class CPlayerInputs : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext context)
     {
+        if (!isControlsEnabled)
+            return;
+
         if (!cPlayerMovements)
             return;
 
@@ -27,9 +31,18 @@ public class CPlayerInputs : MonoBehaviour
 
     public void HorizontalMovement(InputAction.CallbackContext context)
     {
+        if (!isControlsEnabled)
+            return;
+
         if (!cPlayerMovements)
             return;
 
         cPlayerMovements.HorizontalMovement(context.ReadValue<float>());
+    }
+
+    public bool ToggleControls(bool isEnabled)
+    {
+        isControlsEnabled = isEnabled;
+        return isControlsEnabled;
     }
 }
