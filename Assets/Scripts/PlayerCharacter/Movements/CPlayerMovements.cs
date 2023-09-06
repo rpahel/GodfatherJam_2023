@@ -56,7 +56,7 @@ public class CPlayerMovements : MonoBehaviour
                     radius: circleCollider.radius * 0.5f,
                     direction: Vector2.down,
                     distance: circleCollider.radius * 0.5f + 0.1f,
-                    layerMask: LayerMask.GetMask("Carpet")))
+                    layerMask: LayerMask.GetMask("Belt")))
             return true;
 
         return false;

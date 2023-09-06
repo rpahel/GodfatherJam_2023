@@ -924,7 +924,7 @@ MonoBehaviour:
   selectedTextSize: 120
   unselectedTextSize: 50
   selectableTexts:
-  - QUITTER
+  - OPTIONS
   - JOUER
   - CONTROLES
   textOptionPrefab: {fileID: 1180629131817640807, guid: 6db8ef75a857e224b8f310f45075efd8, type: 3}

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 public class MainMenu : MonoBehaviour
 {
@@ -84,12 +85,12 @@ public class MainMenu : MonoBehaviour
         if(scrollInput < 0)
         {
             scrollInput = 1;
-            //DOWN a value
+            ChangeOptionValues(-1);
         }
         else if(scrollInput > 1)
         {
             scrollInput = 0;
-            //UP a value
+            ChangeOptionValues(1);
         }
 
         ScrollMenu();
@@ -107,7 +108,7 @@ public class MainMenu : MonoBehaviour
             RectTransform rectTransform = onScreenOptions[i].GetComponent<RectTransform>();
             TextMeshProUGUI tmpro = onScreenOptions[i].GetComponent<TextMeshProUGUI>();
 
-            rectTransform.parent = carouselBox;
+            rectTransform.SetParent(carouselBox);
 
             switch (i)
             {
@@ -149,5 +150,21 @@ public class MainMenu : MonoBehaviour
         }
         
         previousScrollInput = scrollInput;
+    }
+
+    private void ChangeOptionValues(int delta)
+    {
+        if (delta > 0)
+        {
+            onScreenOptions.Add(onScreenOptions[0]);
+            onScreenOptions.Remove(onScreenOptions[0]);
+        }
+        else
+        {
+            onScreenOptions.Insert(0, onScreenOptions[4]);
+            onScreenOptions.Remove(onScreenOptions[5]);
+        }
+
+
     }
 }

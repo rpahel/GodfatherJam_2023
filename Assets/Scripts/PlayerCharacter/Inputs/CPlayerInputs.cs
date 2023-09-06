@@ -15,6 +15,9 @@ public class CPlayerInputs : MonoBehaviour
             
         if (!TryGetComponent(out cPlayerMovements))
             Debug.LogError("No CPlayerMovements found in " + name + " !");
+
+        // TODO : A supp
+        isControlsEnabled = true;
     }
 
     public void Jump(InputAction.CallbackContext context)
