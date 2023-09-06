@@ -38,6 +38,7 @@ public class MainMenu : MonoBehaviour
     {
         Scroll(context.ReadValue<Vector2>().y * scrollScale);
     }
+
     private void Initialize()
     {
         onScreenOptions = new List<GameObject>();
@@ -53,9 +54,8 @@ public class MainMenu : MonoBehaviour
             if (i == 0 || i == 4)
             {
                 textOption.SetActive(false);
-                textOption.transform.SetParent(textPositions[Mathf.Clamp(i, 0, 2)]);
-                textOption.transform.localRotation = Quaternion.Euler(0, 0, 0);
-                textOption.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+                textOption.transform.localRotation = textPositions[Mathf.Clamp(i, 0, 2)].localRotation;
+                textOption.GetComponent<RectTransform>().anchoredPosition = textPositions[Mathf.Clamp(i, 0, 2)].anchoredPosition;
                 textOption.GetComponent<TextMeshProUGUI>().text = selectableTexts[i == 0 ? 2 : 0];
                 textOption.GetComponent<TextMeshProUGUI>().color = new Color(1, 1, 1, 0);
             }
@@ -67,9 +67,8 @@ public class MainMenu : MonoBehaviour
         {
             RectTransform rectTransform = onScreenOptions[i].GetComponent<RectTransform>();
             onScreenOptions[i].GetComponent<TextMeshProUGUI>().text = selectableTexts[i - 1];
-            rectTransform.SetParent(textPositions[i - 1]);
-            rectTransform.anchoredPosition = Vector2.zero;
-            rectTransform.localRotation = Quaternion.Euler(0, 0, 0);
+            rectTransform.anchoredPosition = textPositions[i - 1].anchoredPosition;
+            rectTransform.localRotation = textPositions[i - 1].localRotation;
         }
 
         scrollInput = 0;
@@ -107,8 +106,6 @@ public class MainMenu : MonoBehaviour
         {
             RectTransform rectTransform = onScreenOptions[i].GetComponent<RectTransform>();
             TextMeshProUGUI tmpro = onScreenOptions[i].GetComponent<TextMeshProUGUI>();
-
-            rectTransform.SetParent(carouselBox);
 
             switch (i)
             {
@@ -164,7 +161,5 @@ public class MainMenu : MonoBehaviour
             onScreenOptions.Insert(0, onScreenOptions[4]);
             onScreenOptions.Remove(onScreenOptions[5]);
         }
-
-
     }
 }
