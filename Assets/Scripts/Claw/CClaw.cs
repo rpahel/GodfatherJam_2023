@@ -4,21 +4,20 @@ using UnityEngine;
 
 public class CClaw : MonoBehaviour
 {
-    SpriteRenderer m_spriteRenderer; //TRASH
     private int m_opening = 0; // etat de l'ouverture de griffe
     private float m_vSpeed = 5.0f;
     private float m_hSpeed = 5.0f;
     private float m_verticalBound = 3;
     private float m_horizontalBound = 10;
+    private float offsetHeld = -1;
+    public float storedEnergy = 0F;
 
     private GameObject go_grabHitbox;
-    private BoxCollider2D bc_grabHitbox;
+    private GameObject go_heldItem;
     // Start is called before the first frame update
     void Start()
     {
         go_grabHitbox = GameObject.Find("Hitbox");
-        bc_grabHitbox = go_grabHitbox.GetComponent<BoxCollider2D>();
-        m_spriteRenderer = GetComponent<SpriteRenderer>(); // TRASH
     }
     // Update is called once per frame
     void Update()
@@ -26,27 +25,38 @@ public class CClaw : MonoBehaviour
         ChgStateClaw();
         MovementClaw();
 
-    }  
+    }
+
+    public bool IsClawOpen()
+    {
+        if (m_opening != -1)
+            return true;
+        return false;
+    }
     public void ChgStateClaw()
     {
         if (Input.GetKeyDown(KeyCode.O) && m_opening != 1)
         {
-            bc_grabHitbox.enabled = false;
+            // if i'm holding && claw open, release
+            if (go_heldItem != null)
+            {
+               Release_Item();
+            }
             m_opening = 1;
-            m_spriteRenderer.color = Color.blue; //T
         }
         if (Input.GetKeyDown(KeyCode.C) && m_opening != -1)
         {
-            bc_grabHitbox.enabled = true;
-            
+            if (go_grabHitbox.GetComponent<HitboxHandler>().IsInRange() && go_grabHitbox.GetComponent<HitboxHandler>().getStoredCollider() != null)
+            {
+                go_heldItem = go_grabHitbox.GetComponent<HitboxHandler>().getStoredCollider().gameObject;
+                Catch_Item();
+                go_grabHitbox.GetComponent<HitboxHandler>().SetInRange(false);
+            }
             m_opening = -1;
-            m_spriteRenderer.color = Color.red;//T  
         }
         if (Input.GetKeyDown(KeyCode.N) && m_opening != 0)
         {
-            bc_grabHitbox.enabled = false;
             m_opening = 0;
-            m_spriteRenderer.color = Color.green;//T
         }
     }
 
@@ -55,11 +65,17 @@ public class CClaw : MonoBehaviour
         // Todo change to float values
         if (Input.GetKey(KeyCode.RightArrow) && transform.position.x < m_horizontalBound)
         {
-            transform.position += new Vector3(m_hSpeed * Time.deltaTime, 0, 0); 
+            storedEnergy += 0.2F * Time.deltaTime;
+            transform.position += new Vector3(m_hSpeed * Time.deltaTime, 0, 0);
+            if (storedEnergy >= 1F)
+                storedEnergy = 1F;
         }   
         if (Input.GetKey(KeyCode.LeftArrow) && transform.position.x > -m_horizontalBound)
         {
+            storedEnergy -= 0.2F * Time.deltaTime;
             transform.position += new Vector3(-m_hSpeed * Time.deltaTime, 0, 0);
+            if (storedEnergy <= -1F)
+                storedEnergy = -1F;
         }
         if (Input.GetKey(KeyCode.UpArrow) && transform.position.y < m_verticalBound)
         {
@@ -71,4 +87,21 @@ public class CClaw : MonoBehaviour
         }
     }
 
+    void Catch_Item()
+    {
+        // snap held item to my pos + offset
+        go_heldItem.transform.position = new Vector3(transform.position.x, transform.position.y + offsetHeld, transform.position.z);
+        // disable rigidbody component of held item
+        go_heldItem.GetComponent<Rigidbody2D>().isKinematic = true;
+        // put held item as child
+        go_heldItem.transform.SetParent(transform, true);
+    }
+
+    void Release_Item()
+    {
+        // remove item as child
+        go_heldItem.transform.parent = null;
+        // activate rigidbody
+        go_heldItem.GetComponent<Rigidbody2D>().isKinematic = false;
+    }
 }
