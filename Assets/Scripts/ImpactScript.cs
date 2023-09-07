@@ -16,7 +16,7 @@ public class ImpactScript : MonoBehaviour
 
     private void Awake()
     {
-        //m_camera = GetComponent<CinemachineVirtualCamera>();
+        m_camera = GetComponent<CinemachineVirtualCamera>();
     }
     private void Start()
     {
