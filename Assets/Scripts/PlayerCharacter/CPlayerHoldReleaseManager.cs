@@ -44,7 +44,7 @@ public class CPlayerHoldReleaseManager : MonoBehaviour
                 inputs.ToggleControls(true);
         }
 
-        if (transform.parent.TryGetComponent(out CPlayerHoldReleaseManager manager))
+        if (transform.parent && transform.parent.TryGetComponent(out CPlayerHoldReleaseManager manager))
             manager.ReleaseCharacter();
     }
 }

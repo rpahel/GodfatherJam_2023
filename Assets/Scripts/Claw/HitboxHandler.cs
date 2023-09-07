@@ -6,6 +6,7 @@ public class HitboxHandler : MonoBehaviour
 {
     private GameObject go_claw;
     private Collider2D stored_colliderItem;
+
     public bool isInRange = false;
     // Start is called before the first frame update
     void Start()
@@ -22,16 +23,22 @@ public class HitboxHandler : MonoBehaviour
     {
         if (c.gameObject.tag == "Obstacle" || c.gameObject.tag == "Player")
         {
+            stored_colliderItem = null;
             isInRange = false;
         }
     }
     private void OnTriggerEnter2D(Collider2D c)
     {
         Debug.Log(c.name + " thing here");
-        if (c.gameObject.tag == "Obstacle" || c.gameObject.tag == "Player") {
+        if (c.gameObject.tag == "Obstacle") {
             if (go_claw.GetComponent<CClaw>().IsClawOpen()) {
                 stored_colliderItem = c;
-                   isInRange = true;
+                isInRange = true;
+            }
+        } else if (c.gameObject.tag == "Player") {
+            if (go_claw.GetComponent<CClaw>().IsClawOpen()) {
+                stored_colliderItem = c.GetComponent<CPlayerHoldReleaseManager>().GrabCharacter().GetComponent<Collider2D>();
+                isInRange = true;
             }
         }
     }
