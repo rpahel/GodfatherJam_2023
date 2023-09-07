@@ -69,17 +69,17 @@ public class CClaw : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.S) && transform.position.x < m_horizontalBound)
         {
-            storedEnergy += 0.2F * Time.deltaTime;
+            storedEnergy -= 0.2F * Time.deltaTime;
             transform.position += new Vector3(m_hSpeed * Time.deltaTime, 0, 0);
-            if (storedEnergy >= 1F)
-                storedEnergy = 1F;
+            if (storedEnergy <= -1F)
+                storedEnergy = -1F;
         }   
         if (Input.GetKey(KeyCode.A) && transform.position.x > -m_horizontalBound)
         {
-            storedEnergy -= 0.2F * Time.deltaTime;
+            storedEnergy += 0.2F * Time.deltaTime;
             transform.position += new Vector3(-m_hSpeed * Time.deltaTime, 0, 0);
-            if (storedEnergy <= -1F)
-                storedEnergy = -1F;
+            if (storedEnergy >= 1F)
+                storedEnergy = 1F;
         }
         if (Input.GetKey(KeyCode.E) && transform.position.y < m_verticalBound)
         {

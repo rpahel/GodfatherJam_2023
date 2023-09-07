@@ -35,7 +35,7 @@ public class ClawVisual : MonoBehaviour
         shakeTimer += Time.deltaTime * shakePeriod;
         float storedSin = Mathf.Sin(shakeTimer * claw.storedEnergy);
         var rotation = new Quaternion();
-        rotation.eulerAngles = new Vector3(transform.rotation.x, transform.rotation.y, storedSin * shakeIntensity * claw.storedEnergy);
+        rotation.eulerAngles = new Vector3(transform.rotation.x, transform.rotation.y, shakeIntensity * claw.storedEnergy);
         transform.rotation = rotation;
     }
 }
