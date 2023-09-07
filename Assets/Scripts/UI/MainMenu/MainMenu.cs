@@ -132,7 +132,7 @@ public class MainMenu : MonoBehaviour
         Debug.Log("ouverture du screen de controles.");
     }
 
-    public void ToggleVolumeScreens()
+    public void ToggleVolumeScreen()
     {
         Debug.Log("ouverture du screen des options.");
     }
