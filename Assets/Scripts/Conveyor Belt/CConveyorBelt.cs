@@ -17,7 +17,7 @@ public class CConveyorBelt : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("ChangeRotation", 10.0f, 5.0f);
+        InvokeRepeating("ChangeRotation", 20.0f, 5.0f);
         vectInitial = player.Rbobj.velocity;
         vectLeft = player.Rbobj.velocity;
         vectRight = player.Rbobj.velocity;
