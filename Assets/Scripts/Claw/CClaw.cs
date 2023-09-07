@@ -10,7 +10,7 @@ public class CClaw : MonoBehaviour
     private int m_opening = 0;
     [SerializeField, Tooltip("Vitesse de mouvement vertical de la griffe")]
     public float m_vSpeed = 5.0f;
-    public float m_hSpeed = 5.0f;
+    public float m_hSpeedScale = 5.0f;
     public float m_verticalBound = 3;
     public float m_horizontalBound = 10;
     private float offsetHeld = -1;
@@ -110,20 +110,20 @@ public class CClaw : MonoBehaviour
 
     public void MovementClaw()
     {
-        if (Input.GetKey(KeyCode.W) && transform.position.x < m_horizontalBound)
-        {
-            storedEnergy -= 0.2F * Time.deltaTime;
-            transform.position += new Vector3(m_hSpeed * Time.deltaTime, 0, 0);
-            if (storedEnergy <= -1F)
-                storedEnergy = -1F;
-        }   
-        if (Input.GetKey(KeyCode.Q) && transform.position.x > -m_horizontalBound)
-        {
-            storedEnergy += 0.2F * Time.deltaTime;
-            transform.position += new Vector3(-m_hSpeed * Time.deltaTime, 0, 0);
-            if (storedEnergy >= 1F)
-                storedEnergy = 1F;
-        }
+        //if (Input.GetKey(KeyCode.W) && transform.position.x < m_horizontalBound)
+        //{
+        //    storedEnergy -= 0.2F * Time.deltaTime;
+        //    transform.position += new Vector3(m_hSpeed * Time.deltaTime, 0, 0);
+        //    if (storedEnergy <= -1F)
+        //        storedEnergy = -1F;
+        //}   
+        //if (Input.GetKey(KeyCode.Q) && transform.position.x > -m_horizontalBound)
+        //{
+        //    storedEnergy += 0.2F * Time.deltaTime;
+        //    transform.position += new Vector3(-m_hSpeed * Time.deltaTime, 0, 0);
+        //    if (storedEnergy >= 1F)
+        //        storedEnergy = 1F;
+        //}
         if (Input.GetKey(KeyCode.J) && transform.position.y < m_verticalBound)
         {
             transform.position += new Vector3(0, m_vSpeed * Time.deltaTime, 0);
@@ -132,6 +132,18 @@ public class CClaw : MonoBehaviour
         {
             transform.position += new Vector3(0, -m_vSpeed * Time.deltaTime, 0);
         }
+    }
+
+    public void OnClawMove(InputAction.CallbackContext context)
+    {
+        float delta = context.ReadValue<float>();
+        Debug.Log(delta);
+
+
+        storedEnergy += (delta / Mathf.Abs(delta)) * 0.2F * Time.deltaTime;
+        storedEnergy = Mathf.Clamp(storedEnergy, -1, 1);
+        transform.position += new Vector3(delta * m_hSpeedScale * Time.deltaTime, 0, 0);
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, -m_horizontalBound, m_horizontalBound), transform.position.y, 0);
     }
 
     void Catch_Item(bool setParent)

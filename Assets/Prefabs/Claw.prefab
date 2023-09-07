@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_opening: 0
   m_vSpeed: 5
-  m_hSpeed: 5
+  m_hSpeedScale: 1
   m_verticalBound: 3
   m_horizontalBound: 10
   storedEnergy: 0

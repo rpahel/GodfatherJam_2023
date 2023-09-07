@@ -2,11 +2,11 @@
     "name": "PlayerCharacterActions",
     "maps": [
         {
-            "name": "Player Character",
+            "name": "Players",
             "id": "a38f53da-ac00-460d-987c-0c75f545d3a3",
             "actions": [
                 {
-                    "name": "Jump",
+                    "name": "RobotJump",
                     "type": "Button",
                     "id": "7224d404-3793-462f-8c75-5b3675366af4",
                     "expectedControlType": "Button",
@@ -15,24 +15,51 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Move",
+                    "name": "RobotMove",
                     "type": "Value",
                     "id": "cf92740d-822b-4577-a3b4-c82cd3584038",
                     "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "ClawMove",
+                    "type": "Value",
+                    "id": "b58208c0-e68f-4394-9df2-8497036c3fe1",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "9c9648cb-fced-4515-a6c9-ad90d5c3d69d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Quit",
+                    "type": "Button",
+                    "id": "fb9b39ae-3aeb-4554-bd4c-ed20126b6666",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
                     "name": "",
                     "id": "abeae8ec-60be-479f-b044-7d5160761307",
-                    "path": "<Keyboard>/upArrow",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & Mouse",
-                    "action": "Jump",
+                    "action": "RobotJump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -43,31 +70,64 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "RobotMove",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "negative",
                     "id": "73574453-a5b8-47cc-8efd-a3da124c76bb",
-                    "path": "<Keyboard>/leftArrow",
+                    "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & Mouse",
-                    "action": "Move",
+                    "action": "RobotMove",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "positive",
                     "id": "103171b1-6ab5-45c8-8568-55a5c721ed51",
-                    "path": "<Keyboard>/rightArrow",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & Mouse",
-                    "action": "Move",
+                    "action": "RobotMove",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "789878f9-1b4a-4b6c-81ab-f5e87bafedc0",
+                    "path": "<Mouse>/delta/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ClawMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "38e19111-3c9b-4052-9125-f31b61b00ed7",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "04e19af7-52b2-4f0e-8bfe-95d3e614cc23",
+                    "path": "<Keyboard>/space",
+                    "interactions": "Hold(duration=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Quit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
