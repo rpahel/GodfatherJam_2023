@@ -13,6 +13,7 @@ public class CPlayerMovements : MonoBehaviour
 
     private float MovementInput { get; set; }
     private Rigidbody2D rb2D;
+    public Rigidbody2D Rbobj => rb2D;
     private CircleCollider2D circleCollider;
 
     private void Awake()
@@ -29,7 +30,7 @@ public class CPlayerMovements : MonoBehaviour
         if (!rb2D)
             return;
 
-        if(!circleCollider)
+        if (!circleCollider)
             return;
 
         if (MovementInput != 0 && Mathf.Abs(rb2D.velocity.x) < maxMovementSpeed)
@@ -50,7 +51,7 @@ public class CPlayerMovements : MonoBehaviour
     private bool IsGrounded()
     {
         Vector2 origin = (Vector2)circleCollider.bounds.center;
-                          
+
         if (Physics2D.CircleCast(
                     origin: origin,
                     radius: circleCollider.radius * 0.5f,
