@@ -5,10 +5,10 @@ using UnityEngine;
 public class CClaw : MonoBehaviour
 {
     private int m_opening = 0; // etat de l'ouverture de griffe
-    private float m_vSpeed = 5.0f;
-    private float m_hSpeed = 5.0f;
-    private float m_verticalBound = 3;
-    private float m_horizontalBound = 10;
+    public float m_vSpeed = 5.0f;
+    public float m_hSpeed = 5.0f;
+    public float m_verticalBound = 3;
+    public float m_horizontalBound = 10;
     private float offsetHeld = -1;
     public float storedEnergy = 0F;
 
@@ -56,13 +56,16 @@ public class CClaw : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.F) && m_opening != 0)
         {
+            if (go_heldItem != null)
+            {
+                Release_Item();
+            }
             m_opening = 0;
         }
     }
 
     public void MovementClaw()
     {
-        // Todo change to float values
         if (Input.GetKey(KeyCode.S) && transform.position.x < m_horizontalBound)
         {
             storedEnergy += 0.2F * Time.deltaTime;
