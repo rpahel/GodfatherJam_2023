@@ -14,6 +14,7 @@ public class CClaw : MonoBehaviour
 
     private GameObject go_grabHitbox;
     private GameObject go_heldItem;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -102,9 +103,15 @@ public class CClaw : MonoBehaviour
 
     void Release_Item()
     {
-        // remove item as child
-        go_heldItem.transform.parent = null;
+        if (go_heldItem.TryGetComponent(out CPlayerHoldReleaseManager playerManager)) {
+            Debug.Log("entering release character");
+            playerManager.ReleaseCharacter();
+        } else {
+            // remove item as child
+            go_heldItem.transform.parent = null;
+        }
         // activate rigidbody
         go_heldItem.GetComponent<Rigidbody2D>().isKinematic = false;
+        go_heldItem = null;
     }
 }
