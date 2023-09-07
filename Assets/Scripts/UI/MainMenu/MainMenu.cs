@@ -1,205 +1,154 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using TMPro;
-using System.Linq;
-using static System.Net.Mime.MediaTypeNames;
-using System;
 
 public class MainMenu : MonoBehaviour
 {
-    [Header("Gamefeel values")]
-    [Tooltip("Temps à attendre pour considérer que le joueur a arrêté de tourner la roue.")]
-    [SerializeField] private float stopScrollWaitingTime = 0.75f;
-    [SerializeField] private float animationTime = 0.5f;
-    [SerializeField] private float scrollScale = 0.01f;
-    [SerializeField] private AnimationCurve translationCurve, opacityCurve;
+    [SerializeField] private float wheelScale, wheelImageSpinSpeed;
+    [SerializeField] private GameObject menuButtonPrefab;
+    [SerializeField] private RectTransform carouselBoxTransform, wheelImageTransform;
+    [SerializeField] private ButtonFunction[] buttonProperties;
+    [SerializeField] private RectTransform[] menuButtonsPositions;
+    [SerializeField] private float selectedFontSize, unselectedFontSize;
 
-    [Header("Objects and animations")]
-    [SerializeField] private float selectedTextSize;
-    [SerializeField] private float unselectedTextSize;
-    [SerializeField] private string[] selectableTexts;
-    [SerializeField] private GameObject textOptionPrefab;
-    [SerializeField] private RectTransform wheelImage, carouselBox;
-    [SerializeField] private RectTransform[] textPositions;
+    private Button[] buttons;
+    private float currentScrollValue = 0;
+    private int currentSelectedOption;
 
-    private float scrollInput = 0f;
-    private float previousScrollInput;
-    private bool canScroll = true;
-    private int selectedOption = 1; // 0 = Options, 1 = Play, 2 = Controls;
-    private List<GameObject> onScreenOptions;
-
-    private void Start()
+    private void Awake()
     {
-        Initialize();
-    }
-
-    public void OnScroll(InputAction.CallbackContext context)
-    {
-        Scroll(context.ReadValue<Vector2>().y * scrollScale);
-    }
-
-    private void Initialize()
-    {
-        onScreenOptions = new List<GameObject>();
-
-        for (int i = 0; i < 5; i++)
+        if(buttonProperties.Length != menuButtonsPositions.Length)
         {
-            GameObject textOption = Instantiate(textOptionPrefab, carouselBox);
-
-            if (i == 0 || i == 4)
-            {
-                textOption.name = selectableTexts[i == 0 ? 2 : 0];
-                textOption.GetComponent<TextMeshProUGUI>().text = selectableTexts[i == 0 ? 2 : 0];
-            }
-            else
-            {
-                textOption.name = selectableTexts[i - 1];
-                textOption.GetComponent<TextMeshProUGUI>().text = selectableTexts[i - 1];
-            }
-
-            onScreenOptions.Add(textOption);
+            return;
         }
 
-        SnapTextOptionsToPositions();
-
-        scrollInput = 0;
-        canScroll = true;
-        selectedOption = 1; // Play
+        InitialiseButtons();
     }
 
-    private void SnapTextOptionsToPositions()
+    private void InitialiseButtons()
     {
-        for (int i = 0; i < 5; i++)
+        buttons = new Button[buttonProperties.Length];
+
+        for (int i = 0; i < buttonProperties.Length; i++)
         {
-            RectTransform rectTransform = onScreenOptions[i].GetComponent<RectTransform>();
-            TextMeshProUGUI tmpro = onScreenOptions[i].GetComponent<TextMeshProUGUI>();
+            GameObject go = Instantiate(menuButtonPrefab, carouselBoxTransform);
+            RectTransform rectTransform = go.GetComponent<RectTransform>();
+            TextMeshProUGUI tmpro = go.GetComponent<TextMeshProUGUI>();
+            Button button = go.GetComponent<Button>();
 
-            if (i != 2)
-                tmpro.fontSize = unselectedTextSize;
-            else
-                tmpro.fontSize = selectedTextSize;
-
-            if (i == 0 || i == 4)
+            rectTransform.anchoredPosition = menuButtonsPositions[i].anchoredPosition;
+            tmpro.fontSize = buttonProperties[i].startsAsSelected ? selectedFontSize : unselectedFontSize;
+            tmpro.text = buttonProperties[i].buttonText;
+            if (buttonProperties[i].startsAsSelected)
             {
-                onScreenOptions[i].SetActive(false);
-                rectTransform.localRotation = textPositions[Mathf.Clamp(i, 0, 2)].localRotation;
-                rectTransform.anchoredPosition = textPositions[Mathf.Clamp(i, 0, 2)].anchoredPosition;
-
-                tmpro.color = new Color(1, 1, 1, 0);
-                continue;
+                tmpro.color = Color.red;
+                currentSelectedOption = i;
             }
 
-            onScreenOptions[i].SetActive(true);
-            rectTransform.anchoredPosition = textPositions[i - 1].anchoredPosition;
-            rectTransform.localRotation = textPositions[i - 1].localRotation;
+            switch (buttonProperties[i].buttonFunction)
+            {
+                case BUTTON_FUNCTION.QUIT:
+                    button.onClick.AddListener(() => QuitGame());
+                    break;
+
+                case BUTTON_FUNCTION.OPTIONS:
+                    button.onClick.AddListener(() => ToggleOptionsScreens());
+                    break;
+
+                case BUTTON_FUNCTION.PLAY:
+                    button.onClick.AddListener(() => StartGame());
+                    break;
+
+                case BUTTON_FUNCTION.CONTROLS:
+                    button.onClick.AddListener(() => ToggleControlsScreens());
+                    break;
+            }
+            buttons[i] = button;
         }
     }
 
-    private void Scroll(float delta)
+    public void MenuScroll(InputAction.CallbackContext context)
     {
-        if (!canScroll)
+        float value = context.ReadValue<float>();
+        if (value == 0f)
             return;
 
-        scrollInput += delta;
-        if(scrollInput < 0)
+        //value /= Mathf.Abs(value);
+        currentScrollValue += value * wheelScale;
+        if(currentScrollValue > 1)
         {
-            scrollInput = 1;
-            ChangeOptionValues(-1);
+            UnselectOption(currentSelectedOption);
+            currentSelectedOption = (int)Mathf.Repeat(currentSelectedOption + 1, buttonProperties.Length);
+            SelectOption(currentSelectedOption);
+            currentScrollValue = 0;
         }
-        else if(scrollInput > 1)
+        else if (currentScrollValue < -1)
         {
-            scrollInput = 0;
-            ChangeOptionValues(1);
+            UnselectOption(currentSelectedOption);
+            currentSelectedOption = (int)Mathf.Repeat(currentSelectedOption - 1, buttonProperties.Length);
+            SelectOption(currentSelectedOption);
+            currentScrollValue = 0;
         }
-        else
-            ScrollMenu();
 
-        ChangeWheelRotation(delta * 0.1f);
+        RollWheel(value);
     }
-    private void ChangeWheelRotation(float delta)
+
+    private void RollWheel(float value)
     {
-        wheelImage.rotation *= Quaternion.Euler(0, 0, delta * 1000);
+        wheelImageTransform.localRotation *= Quaternion.Euler(0, 0, -value * wheelImageSpinSpeed);
     }
 
-    private void ScrollMenu()
+    private void UnselectOption(int index)
     {
-        for(int i = 0; i < 5; i++)
-        {
-            RectTransform rectTransform = onScreenOptions[i].GetComponent<RectTransform>();
-            TextMeshProUGUI tmpro = onScreenOptions[i].GetComponent<TextMeshProUGUI>();
-
-            switch (i)
-            {
-                case 0:
-                    tmpro.color = new Color(1, 1, 1, 1 - scrollInput);
-                    break;
-
-                case 1:
-                    rectTransform.anchoredPosition = Vector2.Lerp(textPositions[1].anchoredPosition, textPositions[0].anchoredPosition, scrollInput);
-                    rectTransform.localRotation = Quaternion.Lerp(textPositions[1].localRotation, textPositions[0].localRotation, scrollInput);
-                    tmpro.fontSize = Mathf.Lerp(unselectedTextSize, selectedTextSize, 1 - scrollInput);
-                    break;
-
-                case 2:
-                    if(previousScrollInput - scrollInput < 0)
-                    {
-                        rectTransform.anchoredPosition = Vector2.Lerp(textPositions[1].anchoredPosition, textPositions[0].anchoredPosition, scrollInput);
-                        rectTransform.localRotation = Quaternion.Lerp(textPositions[1].localRotation, textPositions[0].localRotation, scrollInput);
-                        tmpro.fontSize = Mathf.Lerp(selectedTextSize, unselectedTextSize, scrollInput);
-                    }
-                    else if (previousScrollInput - scrollInput > 0)
-                    {
-                        rectTransform.anchoredPosition = Vector2.Lerp(textPositions[2].anchoredPosition, textPositions[1].anchoredPosition, scrollInput);
-                        rectTransform.localRotation = Quaternion.Lerp(textPositions[2].localRotation, textPositions[1].localRotation, scrollInput);
-                        tmpro.fontSize = Mathf.Lerp(selectedTextSize, unselectedTextSize, 1 - scrollInput);
-                    }
-                    break;
-
-                case 3:
-                    rectTransform.anchoredPosition = Vector2.Lerp(textPositions[2].anchoredPosition, textPositions[1].anchoredPosition, scrollInput);
-                    rectTransform.localRotation = Quaternion.Lerp(textPositions[2].localRotation, textPositions[1].localRotation, scrollInput);
-                    tmpro.fontSize = Mathf.Lerp(unselectedTextSize, selectedTextSize, scrollInput);
-                    break;
-
-                case 4:
-                    tmpro.color = new Color(1, 1, 1, scrollInput);
-                    break;
-            }
-        }
-        
-        previousScrollInput = scrollInput;
+        TextMeshProUGUI tmpro = buttons[index].GetComponent<TextMeshProUGUI>();
+        tmpro.fontSize = unselectedFontSize;
+        tmpro.color = Color.white;
     }
 
-    private void ChangeOptionValues(int delta)
+    private void SelectOption(int index)
     {
-        int index = Array.IndexOf(selectableTexts, onScreenOptions[0].name);
-        index = (int)Mathf.Repeat(index - delta, 2);
-        if (delta > 0)
-        {
-            onScreenOptions[0].name = selectableTexts[index];
-            onScreenOptions[0].GetComponent<TextMeshProUGUI>().text = selectableTexts[index];
-            onScreenOptions.Add(onScreenOptions[0]);
-            onScreenOptions.Remove(onScreenOptions[0]);
-        }
-        else
-        {
-            onScreenOptions[4].name = selectableTexts[index];
-            onScreenOptions[4].GetComponent<TextMeshProUGUI>().text = selectableTexts[index];
-            onScreenOptions.Insert(0, onScreenOptions[4]);
-            onScreenOptions.Remove(onScreenOptions[5]);
-        }
-
-        selectedOption += delta;
-        if (selectedOption > 2) selectedOption = 0;
-        else if (selectedOption < 0) selectedOption = 2;
-        // TODO : On pourrait faire ça en une ligne avec
-        // un vrai modulo mais % n'est pas un vrai modulo
-        // et mon internet a cassé donc je peux pas aller
-        // chercher la formule :(
-
-        SnapTextOptionsToPositions();
+        TextMeshProUGUI tmpro = buttons[index].GetComponent<TextMeshProUGUI>();
+        tmpro.fontSize = selectedFontSize;
+        tmpro.color = Color.red;
     }
+
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+        Application.Quit();
+    }
+
+    public void StartGame()
+    {
+        Debug.Log("The Game Starts.");
+    }
+
+    public void ToggleControlsScreens()
+    {
+        Debug.Log("ouverture du screen de controles.");
+    }
+
+    public void ToggleOptionsScreens()
+    {
+        Debug.Log("ouverture du screen des options.");
+    }
+}
+
+[System.Serializable]
+struct ButtonFunction
+{
+    public string buttonText;
+    public BUTTON_FUNCTION buttonFunction;
+    public bool startsAsSelected;
+}
+
+enum BUTTON_FUNCTION
+{
+    QUIT,
+    OPTIONS,
+    PLAY,
+    CONTROLS
 }

@@ -6,11 +6,11 @@
             "id": "682379ee-7cfa-49c3-b568-5371a478e58a",
             "actions": [
                 {
-                    "name": "Wheel",
+                    "name": "WheelTurn",
                     "type": "Value",
                     "id": "02ed7bf0-6936-4ba8-9fb6-24d5deb52b25",
-                    "expectedControlType": "Vector2",
-                    "processors": "NormalizeVector2",
+                    "expectedControlType": "Axis",
+                    "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
                 }
@@ -19,11 +19,11 @@
                 {
                     "name": "",
                     "id": "2be21a5b-7133-43b3-bada-d91b3bf9ab61",
-                    "path": "<Mouse>/scroll",
+                    "path": "<Mouse>/delta/x",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Wheel",
+                    "action": "WheelTurn",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

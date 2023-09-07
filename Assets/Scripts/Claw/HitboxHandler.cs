@@ -37,7 +37,7 @@ public class HitboxHandler : MonoBehaviour
             }
         } else if (c.gameObject.tag == "Player") {
             if (go_claw.GetComponent<CClaw>().IsClawOpen()) {
-                stored_colliderItem = c.GetComponent<CPlayerHoldReleaseManager>().GrabCharacter().GetComponent<Collider2D>();
+                stored_colliderItem = c;
                 isInRange = true;
             }
         }

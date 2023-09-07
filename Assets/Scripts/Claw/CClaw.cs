@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CClaw : MonoBehaviour
@@ -11,23 +12,42 @@ public class CClaw : MonoBehaviour
     public float m_horizontalBound = 10;
     private float offsetHeld = -1;
     public float storedEnergy = 0F;
+    public float clawMaxHealth = 30;
+    private float clawHealth;
 
     private GameObject go_grabHitbox;
     private GameObject go_heldItem;
+    private GameObject go_impact;
 
     // Start is called before the first frame update
     void Start()
     {
         go_grabHitbox = GameObject.Find("Hitbox");
+        go_impact = GameObject.Find("Virtual Camera");
     }
     // Update is called once per frame
     void Update()
     {
         ChgStateClaw();
         MovementClaw();
-
+        if (go_heldItem != null)
+            PlayerMash();
     }
 
+    private void PlayerMash()
+    {
+        if (clawHealth <= 0) {
+            go_impact.GetComponent<ImpactScript>().callImpact();
+            Release_Item();
+            m_opening = 1;
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            go_impact.GetComponent<ImpactScript>().callShake();
+            Debug.Log("MASHIN" + clawHealth);
+            clawHealth -= 1;
+        }
+    }
     public bool IsClawOpen()
     {
         if (m_opening != -1)
@@ -41,6 +61,7 @@ public class CClaw : MonoBehaviour
             // if i'm holding && claw open, release
             if (go_heldItem != null)
             {
+               go_impact.GetComponent<ImpactScript>().callImpact();
                Release_Item();
             }
             m_opening = 1;
@@ -50,7 +71,15 @@ public class CClaw : MonoBehaviour
             if (go_grabHitbox.GetComponent<HitboxHandler>().IsInRange() && go_grabHitbox.GetComponent<HitboxHandler>().getStoredCollider() != null)
             {
                 go_heldItem = go_grabHitbox.GetComponent<HitboxHandler>().getStoredCollider().gameObject;
-                Catch_Item();
+                if (go_heldItem.TryGetComponent(out CPlayerHoldReleaseManager cPlayerHRM))
+                {
+                    go_impact.GetComponent<ImpactScript>().callImpact();
+                    go_heldItem = cPlayerHRM.GrabCharacter(transform).gameObject;
+                    Catch_Item(false);
+                } else {
+                    Catch_Item(true);
+                }
+                clawHealth = clawMaxHealth;
                 go_grabHitbox.GetComponent<HitboxHandler>().SetInRange(false);
             }
             m_opening = -1;
@@ -91,14 +120,15 @@ public class CClaw : MonoBehaviour
         }
     }
 
-    void Catch_Item()
+    void Catch_Item(bool setParent)
     {
         // snap held item to my pos + offset
         go_heldItem.transform.position = new Vector3(transform.position.x, transform.position.y + offsetHeld, transform.position.z);
         // disable rigidbody component of held item
         go_heldItem.GetComponent<Rigidbody2D>().isKinematic = true;
         // put held item as child
-        go_heldItem.transform.SetParent(transform, true);
+        if (setParent)
+            go_heldItem.transform.SetParent(transform, true);
     }
 
     void Release_Item()
