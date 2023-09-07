@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class CClaw : MonoBehaviour
 {
-    private int m_opening = 0; // etat de l'ouverture de griffe
+    [SerializeField, Tooltip("Etat d'ouverture de la griffe (-1 = fermé, 0 = neutre et 1 = ouvert)")]
+    private int m_opening = 0;
+    [SerializeField, Tooltip("Vitesse de mouvement vertical de la griffe")]
     public float m_vSpeed = 5.0f;
     public float m_hSpeed = 5.0f;
     public float m_verticalBound = 3;
@@ -30,7 +32,7 @@ public class CClaw : MonoBehaviour
     {
         ChgStateClaw();
         MovementClaw();
-        if (go_heldItem != null)
+        if (go_heldItem != null && go_heldItem.gameObject.tag == "Player")
             PlayerMash();
     }
 
@@ -41,7 +43,7 @@ public class CClaw : MonoBehaviour
             Release_Item();
             m_opening = 1;
         }
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.F))
         {
             go_impact.GetComponent<ImpactScript>().callShake();
             Debug.Log("MASHIN" + clawHealth);
