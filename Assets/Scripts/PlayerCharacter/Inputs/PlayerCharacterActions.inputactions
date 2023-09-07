@@ -28,7 +28,7 @@
                 {
                     "name": "",
                     "id": "abeae8ec-60be-479f-b044-7d5160761307",
-                    "path": "<Keyboard>/numpad5",
+                    "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & Mouse",
@@ -50,7 +50,7 @@
                 {
                     "name": "negative",
                     "id": "73574453-a5b8-47cc-8efd-a3da124c76bb",
-                    "path": "<Keyboard>/numpad1",
+                    "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & Mouse",
@@ -61,7 +61,7 @@
                 {
                     "name": "positive",
                     "id": "103171b1-6ab5-45c8-8568-55a5c721ed51",
-                    "path": "<Keyboard>/numpad3",
+                    "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & Mouse",
