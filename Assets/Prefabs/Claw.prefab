@@ -47,11 +47,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0018412481d4e6b41b01e65b37590b38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_opening: 0
   m_vSpeed: 5
   m_hSpeed: 5
   m_verticalBound: 3
   m_horizontalBound: 10
   storedEnergy: 0
+  clawMaxHealth: 30
 --- !u!1 &655942943288167778
 GameObject:
   m_ObjectHideFlags: 0

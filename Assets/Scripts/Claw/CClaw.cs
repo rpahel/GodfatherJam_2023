@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CClaw : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class CClaw : MonoBehaviour
     {
         ChgStateClaw();
         MovementClaw();
-        if (go_heldItem != null && go_heldItem.gameObject.tag == "Player")
+        if (go_heldItem != null && go_heldItem.gameObject.layer == LayerMask.NameToLayer("Player"))
             PlayerMash();
     }
 
@@ -58,7 +59,7 @@ public class CClaw : MonoBehaviour
     }
     public void ChgStateClaw()
     {
-        if (Input.GetKeyDown(KeyCode.R) && m_opening != 1)
+        if (Input.GetKeyDown(KeyCode.L) && m_opening != 1)
         {
             // if i'm holding && claw open, release
             if (go_heldItem != null)
@@ -68,7 +69,7 @@ public class CClaw : MonoBehaviour
             }
             m_opening = 1;
         }
-        if (Input.GetKeyDown(KeyCode.V) && m_opening != -1)
+        if (Input.GetKeyDown(KeyCode.Alpha6) && m_opening != -1)
         {
             if (go_grabHitbox.GetComponent<HitboxHandler>().IsInRange() && go_grabHitbox.GetComponent<HitboxHandler>().getStoredCollider() != null)
             {
@@ -86,7 +87,7 @@ public class CClaw : MonoBehaviour
             }
             m_opening = -1;
         }
-        if (Input.GetKeyDown(KeyCode.F) && m_opening != 0)
+        if (Input.GetKeyDown(KeyCode.N) && m_opening != 0)
         {
             if (go_heldItem != null)
             {
@@ -96,27 +97,38 @@ public class CClaw : MonoBehaviour
         }
     }
 
+    //public void OnUpDown(InputAction.CallbackContext context)
+    //{
+    //    float value = context.ReadValue<float>();
+    //    if (value < 0 && transform.position.y > -m_verticalBound) {
+    //        transform.position += new Vector3(0, -m_vSpeed * Time.deltaTime, 0);
+    //    }
+    //    else if (value > 0 && transform.position.y < m_verticalBound) {
+    //        transform.position += new Vector3(0, m_vSpeed * Time.deltaTime, 0);
+    //    }
+    //}
+
     public void MovementClaw()
     {
-        if (Input.GetKey(KeyCode.S) && transform.position.x < m_horizontalBound)
+        if (Input.GetKey(KeyCode.W) && transform.position.x < m_horizontalBound)
         {
             storedEnergy -= 0.2F * Time.deltaTime;
             transform.position += new Vector3(m_hSpeed * Time.deltaTime, 0, 0);
             if (storedEnergy <= -1F)
                 storedEnergy = -1F;
         }   
-        if (Input.GetKey(KeyCode.A) && transform.position.x > -m_horizontalBound)
+        if (Input.GetKey(KeyCode.Q) && transform.position.x > -m_horizontalBound)
         {
             storedEnergy += 0.2F * Time.deltaTime;
             transform.position += new Vector3(-m_hSpeed * Time.deltaTime, 0, 0);
             if (storedEnergy >= 1F)
                 storedEnergy = 1F;
         }
-        if (Input.GetKey(KeyCode.E) && transform.position.y < m_verticalBound)
+        if (Input.GetKey(KeyCode.J) && transform.position.y < m_verticalBound)
         {
             transform.position += new Vector3(0, m_vSpeed * Time.deltaTime, 0);
         }
-        if (Input.GetKey(KeyCode.D) && transform.position.y > -m_verticalBound)
+        if (Input.GetKey(KeyCode.V)      && transform.position.y > -m_verticalBound)
         {
             transform.position += new Vector3(0, -m_vSpeed * Time.deltaTime, 0);
         }
