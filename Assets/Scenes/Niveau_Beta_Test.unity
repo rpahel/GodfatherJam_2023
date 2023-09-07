@@ -569,7 +569,7 @@ GameObject:
   - component: {fileID: 731105718}
   - component: {fileID: 731105717}
   - component: {fileID: 731105716}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Box (1)
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -995,7 +995,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 934869305}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Objets Interactif
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1082,6 +1082,10 @@ PrefabInstance:
     - target: {fileID: 7702088339147962448, guid: ce2811bd10df5154b8cd9972094d1fd7, type: 3}
       propertyPath: m_Name
       value: PlayerCharacter
+      objectReference: {fileID: 0}
+    - target: {fileID: 7702088339147962448, guid: ce2811bd10df5154b8cd9972094d1fd7, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -1744,7 +1748,7 @@ GameObject:
   - component: {fileID: 1780012239}
   - component: {fileID: 1780012242}
   - component: {fileID: 1780012243}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Box
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
