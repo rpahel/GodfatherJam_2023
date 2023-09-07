@@ -411,7 +411,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxMovementSpeed: 12
   acceleration: 90
-  jumpForce: 32
+  jumpForce: 34
 --- !u!114 &3468718409579532109
 MonoBehaviour:
   m_ObjectHideFlags: 0
