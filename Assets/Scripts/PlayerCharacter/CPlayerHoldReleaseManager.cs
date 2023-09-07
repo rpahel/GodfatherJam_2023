@@ -9,10 +9,12 @@ public class CPlayerHoldReleaseManager : MonoBehaviour
     private bool isBase;
 
     private CPlayerInputs inputs;
+    private Rigidbody2D rb2d;
 
     private void Awake()
     {
         TryGetComponent(out inputs);
+        TryGetComponent(out rb2d);
     }
 
     public Transform GrabCharacter(Transform newParent = null)
@@ -25,11 +27,21 @@ public class CPlayerHoldReleaseManager : MonoBehaviour
             if (inputs)
                 inputs.ToggleControls(false);
 
+            if (rb2d)
+                rb2d.velocity = Vector2.zero;
+
             return transform;
         }
 
         if (transform.parent.TryGetComponent(out CPlayerHoldReleaseManager manager))
+        {
+            // ptet
+            //if (rb2d)
+            //  rb2d.velocity = Vector2.zero;
+            // ici aussi ?
+
             return manager.GrabCharacter(newParent);
+        }
 
         return null;
     }
