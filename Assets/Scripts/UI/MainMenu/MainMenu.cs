@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using static System.Net.Mime.MediaTypeNames;
+using System;
 
 public class MainMenu : MonoBehaviour
 {
@@ -42,39 +44,60 @@ public class MainMenu : MonoBehaviour
     private void Initialize()
     {
         onScreenOptions = new List<GameObject>();
+
         for (int i = 0; i < 5; i++)
         {
             GameObject textOption = Instantiate(textOptionPrefab, carouselBox);
 
-            if (i != 2)
-                textOption.GetComponent<TextMeshProUGUI>().fontSize = unselectedTextSize;
-            else
-                textOption.GetComponent<TextMeshProUGUI>().fontSize = selectedTextSize;
-
             if (i == 0 || i == 4)
             {
-                textOption.SetActive(false);
-                textOption.transform.localRotation = textPositions[Mathf.Clamp(i, 0, 2)].localRotation;
-                textOption.GetComponent<RectTransform>().anchoredPosition = textPositions[Mathf.Clamp(i, 0, 2)].anchoredPosition;
+                textOption.name = selectableTexts[i == 0 ? 2 : 0];
                 textOption.GetComponent<TextMeshProUGUI>().text = selectableTexts[i == 0 ? 2 : 0];
-                textOption.GetComponent<TextMeshProUGUI>().color = new Color(1, 1, 1, 0);
+            }
+            else
+            {
+                textOption.name = selectableTexts[i - 1];
+                textOption.GetComponent<TextMeshProUGUI>().text = selectableTexts[i - 1];
             }
 
             onScreenOptions.Add(textOption);
         }
 
-        for (int i = 1; i < 4; i++)
-        {
-            RectTransform rectTransform = onScreenOptions[i].GetComponent<RectTransform>();
-            onScreenOptions[i].GetComponent<TextMeshProUGUI>().text = selectableTexts[i - 1];
-            rectTransform.anchoredPosition = textPositions[i - 1].anchoredPosition;
-            rectTransform.localRotation = textPositions[i - 1].localRotation;
-        }
+        SnapTextOptionsToPositions();
 
         scrollInput = 0;
         canScroll = true;
         selectedOption = 1; // Play
     }
+
+    private void SnapTextOptionsToPositions()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            RectTransform rectTransform = onScreenOptions[i].GetComponent<RectTransform>();
+            TextMeshProUGUI tmpro = onScreenOptions[i].GetComponent<TextMeshProUGUI>();
+
+            if (i != 2)
+                tmpro.fontSize = unselectedTextSize;
+            else
+                tmpro.fontSize = selectedTextSize;
+
+            if (i == 0 || i == 4)
+            {
+                onScreenOptions[i].SetActive(false);
+                rectTransform.localRotation = textPositions[Mathf.Clamp(i, 0, 2)].localRotation;
+                rectTransform.anchoredPosition = textPositions[Mathf.Clamp(i, 0, 2)].anchoredPosition;
+
+                tmpro.color = new Color(1, 1, 1, 0);
+                continue;
+            }
+
+            onScreenOptions[i].SetActive(true);
+            rectTransform.anchoredPosition = textPositions[i - 1].anchoredPosition;
+            rectTransform.localRotation = textPositions[i - 1].localRotation;
+        }
+    }
+
     private void Scroll(float delta)
     {
         if (!canScroll)
@@ -91,8 +114,9 @@ public class MainMenu : MonoBehaviour
             scrollInput = 0;
             ChangeOptionValues(1);
         }
+        else
+            ScrollMenu();
 
-        ScrollMenu();
         ChangeWheelRotation(delta * 0.1f);
     }
     private void ChangeWheelRotation(float delta)
@@ -151,15 +175,31 @@ public class MainMenu : MonoBehaviour
 
     private void ChangeOptionValues(int delta)
     {
+        int index = Array.IndexOf(selectableTexts, onScreenOptions[0].name);
+        index = (int)Mathf.Repeat(index - delta, 2);
         if (delta > 0)
         {
+            onScreenOptions[0].name = selectableTexts[index];
+            onScreenOptions[0].GetComponent<TextMeshProUGUI>().text = selectableTexts[index];
             onScreenOptions.Add(onScreenOptions[0]);
             onScreenOptions.Remove(onScreenOptions[0]);
         }
         else
         {
+            onScreenOptions[4].name = selectableTexts[index];
+            onScreenOptions[4].GetComponent<TextMeshProUGUI>().text = selectableTexts[index];
             onScreenOptions.Insert(0, onScreenOptions[4]);
             onScreenOptions.Remove(onScreenOptions[5]);
         }
+
+        selectedOption += delta;
+        if (selectedOption > 2) selectedOption = 0;
+        else if (selectedOption < 0) selectedOption = 2;
+        // TODO : On pourrait faire ça en une ligne avec
+        // un vrai modulo mais % n'est pas un vrai modulo
+        // et mon internet a cassé donc je peux pas aller
+        // chercher la formule :(
+
+        SnapTextOptionsToPositions();
     }
 }

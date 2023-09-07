@@ -35,7 +35,7 @@ public class CClaw : MonoBehaviour
     }
     public void ChgStateClaw()
     {
-        if (Input.GetKeyDown(KeyCode.O) && m_opening != 1)
+        if (Input.GetKeyDown(KeyCode.R) && m_opening != 1)
         {
             // if i'm holding && claw open, release
             if (go_heldItem != null)
@@ -44,7 +44,7 @@ public class CClaw : MonoBehaviour
             }
             m_opening = 1;
         }
-        if (Input.GetKeyDown(KeyCode.C) && m_opening != -1)
+        if (Input.GetKeyDown(KeyCode.V) && m_opening != -1)
         {
             if (go_grabHitbox.GetComponent<HitboxHandler>().IsInRange() && go_grabHitbox.GetComponent<HitboxHandler>().getStoredCollider() != null)
             {
@@ -54,7 +54,7 @@ public class CClaw : MonoBehaviour
             }
             m_opening = -1;
         }
-        if (Input.GetKeyDown(KeyCode.N) && m_opening != 0)
+        if (Input.GetKeyDown(KeyCode.F) && m_opening != 0)
         {
             m_opening = 0;
         }
@@ -63,25 +63,25 @@ public class CClaw : MonoBehaviour
     public void MovementClaw()
     {
         // Todo change to float values
-        if (Input.GetKey(KeyCode.RightArrow) && transform.position.x < m_horizontalBound)
+        if (Input.GetKey(KeyCode.S) && transform.position.x < m_horizontalBound)
         {
             storedEnergy += 0.2F * Time.deltaTime;
             transform.position += new Vector3(m_hSpeed * Time.deltaTime, 0, 0);
             if (storedEnergy >= 1F)
                 storedEnergy = 1F;
         }   
-        if (Input.GetKey(KeyCode.LeftArrow) && transform.position.x > -m_horizontalBound)
+        if (Input.GetKey(KeyCode.A) && transform.position.x > -m_horizontalBound)
         {
             storedEnergy -= 0.2F * Time.deltaTime;
             transform.position += new Vector3(-m_hSpeed * Time.deltaTime, 0, 0);
             if (storedEnergy <= -1F)
                 storedEnergy = -1F;
         }
-        if (Input.GetKey(KeyCode.UpArrow) && transform.position.y < m_verticalBound)
+        if (Input.GetKey(KeyCode.E) && transform.position.y < m_verticalBound)
         {
             transform.position += new Vector3(0, m_vSpeed * Time.deltaTime, 0);
         }
-        if (Input.GetKey(KeyCode.DownArrow) && transform.position.y > -m_verticalBound)
+        if (Input.GetKey(KeyCode.D) && transform.position.y > -m_verticalBound)
         {
             transform.position += new Vector3(0, -m_vSpeed * Time.deltaTime, 0);
         }
