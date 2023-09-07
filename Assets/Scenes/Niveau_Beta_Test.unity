@@ -2251,8 +2251,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_camera: {fileID: 0}
-  shakeIntensity: 1
-  Duration: 0.5
+  shakeIntensity: 10
+  Duration: 0.33
   remainingTime: -100
 --- !u!1 &2004016358
 GameObject:

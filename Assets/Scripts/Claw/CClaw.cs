@@ -14,11 +14,13 @@ public class CClaw : MonoBehaviour
 
     private GameObject go_grabHitbox;
     private GameObject go_heldItem;
+    private GameObject go_impact;
 
     // Start is called before the first frame update
     void Start()
     {
         go_grabHitbox = GameObject.Find("Hitbox");
+        go_impact = GameObject.Find("Virtual Camera");
     }
     // Update is called once per frame
     void Update()
@@ -41,6 +43,7 @@ public class CClaw : MonoBehaviour
             // if i'm holding && claw open, release
             if (go_heldItem != null)
             {
+               go_impact.GetComponent<ImpactScript>().callImpact();
                Release_Item();
             }
             m_opening = 1;
@@ -50,7 +53,15 @@ public class CClaw : MonoBehaviour
             if (go_grabHitbox.GetComponent<HitboxHandler>().IsInRange() && go_grabHitbox.GetComponent<HitboxHandler>().getStoredCollider() != null)
             {
                 go_heldItem = go_grabHitbox.GetComponent<HitboxHandler>().getStoredCollider().gameObject;
-                Catch_Item();
+                if (go_heldItem.TryGetComponent(out CPlayerHoldReleaseManager cPlayerHRM))
+                {
+                    go_impact.GetComponent<ImpactScript>().callImpact();
+                    go_heldItem = cPlayerHRM.GrabCharacter(transform).gameObject;
+                    Catch_Item(false);
+                } else {
+                    Catch_Item(true);
+                }
+
                 go_grabHitbox.GetComponent<HitboxHandler>().SetInRange(false);
             }
             m_opening = -1;
@@ -91,14 +102,15 @@ public class CClaw : MonoBehaviour
         }
     }
 
-    void Catch_Item()
+    void Catch_Item(bool setParent)
     {
         // snap held item to my pos + offset
         go_heldItem.transform.position = new Vector3(transform.position.x, transform.position.y + offsetHeld, transform.position.z);
         // disable rigidbody component of held item
         go_heldItem.GetComponent<Rigidbody2D>().isKinematic = true;
         // put held item as child
-        go_heldItem.transform.SetParent(transform, true);
+        if (setParent)
+            go_heldItem.transform.SetParent(transform, true);
     }
 
     void Release_Item()

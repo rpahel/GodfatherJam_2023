@@ -44,13 +44,16 @@ public class ImpactScript : MonoBehaviour
         Time.timeScale = 0.0F;
     }
 
-    private void Update()
+    public void callImpact()
     {
-        if (Input.GetKeyDown(KeyCode.T) && isImpactOn == false)
+        if (isImpactOn == false)
         {
             PauseTime();
             ShakeScreen();
-        }//TRASH
+        }
+    }
+    private void Update()
+    {
         if (remainingTime > 0) {
             remainingTime -= Time.unscaledDeltaTime;
         } else if (remainingTime <= 0 && isImpactOn) {
