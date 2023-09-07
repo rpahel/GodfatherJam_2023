@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CClaw : MonoBehaviour
@@ -11,6 +12,8 @@ public class CClaw : MonoBehaviour
     public float m_horizontalBound = 10;
     private float offsetHeld = -1;
     public float storedEnergy = 0F;
+    public float clawMaxHealth = 30;
+    private float clawHealth;
 
     private GameObject go_grabHitbox;
     private GameObject go_heldItem;
@@ -27,9 +30,24 @@ public class CClaw : MonoBehaviour
     {
         ChgStateClaw();
         MovementClaw();
-
+        if (go_heldItem != null)
+            PlayerMash();
     }
 
+    private void PlayerMash()
+    {
+        if (clawHealth <= 0) {
+            go_impact.GetComponent<ImpactScript>().callImpact();
+            Release_Item();
+            m_opening = 1;
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            go_impact.GetComponent<ImpactScript>().callShake();
+            Debug.Log("MASHIN" + clawHealth);
+            clawHealth -= 1;
+        }
+    }
     public bool IsClawOpen()
     {
         if (m_opening != -1)
@@ -61,7 +79,7 @@ public class CClaw : MonoBehaviour
                 } else {
                     Catch_Item(true);
                 }
-
+                clawHealth = clawMaxHealth;
                 go_grabHitbox.GetComponent<HitboxHandler>().SetInRange(false);
             }
             m_opening = -1;
