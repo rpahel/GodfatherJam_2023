@@ -68,6 +68,11 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    public void Select(InputAction.CallbackContext context)
+    {
+        buttons[currentSelectedOption].onClick.Invoke();
+    }
+
     public void MenuScroll(InputAction.CallbackContext context)
     {
         float value = context.ReadValue<float>();
