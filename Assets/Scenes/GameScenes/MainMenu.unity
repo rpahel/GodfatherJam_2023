@@ -879,7 +879,7 @@ MonoBehaviour:
   - buttonText: Jouer
     buttonFunction: 2
     startsAsSelected: 1
-  - buttonText: Options
+  - buttonText: Volume
     buttonFunction: 1
     startsAsSelected: 0
   - buttonText: Quitter

@@ -52,16 +52,12 @@ public class MainMenu : MonoBehaviour
                     button.onClick.AddListener(() => QuitGame());
                     break;
 
-                case BUTTON_FUNCTION.OPTIONS:
-                    button.onClick.AddListener(() => ToggleOptionsScreens());
+                case BUTTON_FUNCTION.VOLUME:
+                    button.onClick.AddListener(() => ToggleVolumeScreen());
                     break;
 
                 case BUTTON_FUNCTION.PLAY:
                     button.onClick.AddListener(() => StartGame());
-                    break;
-
-                case BUTTON_FUNCTION.CONTROLS:
-                    button.onClick.AddListener(() => ToggleControlsScreens());
                     break;
             }
             buttons[i] = button;
@@ -131,12 +127,12 @@ public class MainMenu : MonoBehaviour
         Debug.Log("The Game Starts.");
     }
 
-    public void ToggleControlsScreens()
+    public void ToggleControlsScreen()
     {
         Debug.Log("ouverture du screen de controles.");
     }
 
-    public void ToggleOptionsScreens()
+    public void ToggleVolumeScreens()
     {
         Debug.Log("ouverture du screen des options.");
     }
@@ -153,7 +149,6 @@ struct ButtonFunction
 enum BUTTON_FUNCTION
 {
     QUIT,
-    OPTIONS,
-    PLAY,
-    CONTROLS
+    VOLUME,
+    PLAY
 }
