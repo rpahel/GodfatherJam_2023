@@ -52,6 +52,14 @@ public class ImpactScript : MonoBehaviour
             ShakeScreen();
         }
     }
+
+    public void callShake()
+    {
+        isImpactOn = true;
+        remainingTime = 0.3F;
+        m_multiChannelPerlin.m_AmplitudeGain = shakeIntensity / 2;
+
+    }
     private void Update()
     {
         if (remainingTime > 0) {
@@ -62,6 +70,10 @@ public class ImpactScript : MonoBehaviour
             remainingTime = 0;
             Time.timeScale = 1.0F;
             isImpactOn = false;
+        } else if (remainingTime <= 0)
+        {
+            StopShake();
+            remainingTime = 0;
         }
     }
 }
