@@ -132,6 +132,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Claw
       objectReference: {fileID: 0}
+    - target: {fileID: 4742140579024072580, guid: f2bd407402829aa40b29c3a79f50b92d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a75599f78aad3bb4a89306ebf697586b, type: 2}
+    - target: {fileID: 6462917409331163891, guid: f2bd407402829aa40b29c3a79f50b92d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6ac2ada990ec36f4a9990889527c3ff5, type: 2}
     - target: {fileID: 6611092011368625597, guid: f2bd407402829aa40b29c3a79f50b92d, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
