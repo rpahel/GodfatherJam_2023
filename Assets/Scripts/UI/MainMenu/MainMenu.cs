@@ -10,7 +10,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private RectTransform carouselBoxTransform, wheelImageTransform;
     [SerializeField] private ButtonFunction[] buttonProperties;
     [SerializeField] private RectTransform[] menuButtonsPositions;
-    [SerializeField] private float selectedFontSize, unselectedFontSize;
+    [SerializeField] private float selectedButtonSize, unselectedButtonSize;
 
     private Button[] buttons;
     private float currentScrollValue = 0;
@@ -34,15 +34,16 @@ public class MainMenu : MonoBehaviour
         {
             GameObject go = Instantiate(menuButtonPrefab, carouselBoxTransform);
             RectTransform rectTransform = go.GetComponent<RectTransform>();
-            TextMeshProUGUI tmpro = go.GetComponent<TextMeshProUGUI>();
+            Image imageRenderer = go.GetComponent<Image>();
             Button button = go.GetComponent<Button>();
 
+            imageRenderer.sprite = buttonProperties[i].buttonSprite;
+            imageRenderer.SetNativeSize();
+            rectTransform.localScale = buttonProperties[i].startsAsSelected ? selectedButtonSize * Vector2.one : unselectedButtonSize * Vector2.one;
             rectTransform.anchoredPosition = menuButtonsPositions[i].anchoredPosition;
-            tmpro.fontSize = buttonProperties[i].startsAsSelected ? selectedFontSize : unselectedFontSize;
-            tmpro.text = buttonProperties[i].buttonText;
+
             if (buttonProperties[i].startsAsSelected)
             {
-                tmpro.color = Color.red;
                 currentSelectedOption = i;
             }
 
@@ -53,7 +54,7 @@ public class MainMenu : MonoBehaviour
                     break;
 
                 case BUTTON_FUNCTION.VOLUME:
-                    button.onClick.AddListener(() => ToggleVolumeScreen());
+                    button.onClick.AddListener(() => ToggleVolume());
                     break;
 
                 case BUTTON_FUNCTION.PLAY:
@@ -102,16 +103,14 @@ public class MainMenu : MonoBehaviour
 
     private void UnselectOption(int index)
     {
-        TextMeshProUGUI tmpro = buttons[index].GetComponent<TextMeshProUGUI>();
-        tmpro.fontSize = unselectedFontSize;
-        tmpro.color = Color.white;
+        RectTransform rectTransform = buttons[index].GetComponent<RectTransform>();
+        rectTransform.localScale = Vector2.one * unselectedButtonSize;
     }
 
     private void SelectOption(int index)
     {
-        TextMeshProUGUI tmpro = buttons[index].GetComponent<TextMeshProUGUI>();
-        tmpro.fontSize = selectedFontSize;
-        tmpro.color = Color.red;
+        RectTransform rectTransform = buttons[index].GetComponent<RectTransform>();
+        rectTransform.localScale = Vector2.one * selectedButtonSize;
     }
 
     public void QuitGame()
@@ -127,21 +126,19 @@ public class MainMenu : MonoBehaviour
         Debug.Log("The Game Starts.");
     }
 
-    public void ToggleControlsScreen()
+    public void ToggleVolume()
     {
-        Debug.Log("ouverture du screen de controles.");
-    }
-
-    public void ToggleVolumeScreen()
-    {
-        Debug.Log("ouverture du screen des options.");
+        Debug.Log("Activation / désactivation du son");
+        Image image = buttons[1].GetComponent<Image>();
+        image.sprite = (image.sprite == buttonProperties[1].buttonSprite ? buttonProperties[1].altSprite : buttonProperties[1].buttonSprite);
     }
 }
 
 [System.Serializable]
 struct ButtonFunction
 {
-    public string buttonText;
+    public Sprite buttonSprite;
+    public Sprite altSprite;
     public BUTTON_FUNCTION buttonFunction;
     public bool startsAsSelected;
 }
