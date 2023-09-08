@@ -44,7 +44,7 @@ public class CClaw : MonoBehaviour
             Release_Item();
             m_opening = 1;
         }
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.R))
         {
             go_impact.GetComponent<ImpactScript>().callShake();
             Debug.Log("MASHIN" + clawHealth);
