@@ -1221,7 +1221,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2498909366424556993, guid: 442e26cafa3267949b70e3098cac2e34, type: 3}
       propertyPath: sceneRefs.Array.size
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2498909366424556993, guid: 442e26cafa3267949b70e3098cac2e34, type: 3}
       propertyPath: sceneRefs.Array.data[0]
@@ -1234,6 +1234,14 @@ PrefabInstance:
     - target: {fileID: 2498909366424556993, guid: 442e26cafa3267949b70e3098cac2e34, type: 3}
       propertyPath: sceneRefs.Array.data[2]
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498909366424556993, guid: 442e26cafa3267949b70e3098cac2e34, type: 3}
+      propertyPath: sceneRefs.Array.data[3]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498909366424556993, guid: 442e26cafa3267949b70e3098cac2e34, type: 3}
+      propertyPath: sceneRefs.Array.data[4]
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8460768026392670448, guid: 442e26cafa3267949b70e3098cac2e34, type: 3}
       propertyPath: m_Name
