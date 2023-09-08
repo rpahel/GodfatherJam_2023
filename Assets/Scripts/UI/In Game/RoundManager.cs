@@ -25,7 +25,7 @@ public class RoundManager : MonoBehaviour
 
     int clawScore = 0;
     int robotScore = 0;
-
+    bool robotGotScore = false;
     private GameObject go_player;
 
 
@@ -47,6 +47,7 @@ public class RoundManager : MonoBehaviour
     }
     void ResetTimer()
     {
+        robotGotScore = false;
         clockTimeRemaining = roundDuration;
         isRunning = true;
     }
@@ -85,8 +86,9 @@ public class RoundManager : MonoBehaviour
         DisplayTime(clockTimeRemaining);
         if (gameEnd == false)
         {
-            if (go_player.GetComponent<CPlayerMovements>().isPlayerDead)
+            if (go_player.GetComponent<CPlayerMovements>().isPlayerDead && !robotGotScore)
             {
+                robotGotScore = true;
                 clawScore += (int)clockTimeRemaining;
                 robotScore += (int)roundDuration - (int)clockTimeRemaining;
                 if (robotScore < 0)
@@ -109,8 +111,11 @@ public class RoundManager : MonoBehaviour
                     clockTimeRemaining -= Time.deltaTime;
                     DisplayTime(clockTimeRemaining);
                 } else {
-                    if (!go_player.GetComponent<CPlayerMovements>().isPlayerDead)
+                    if (!go_player.GetComponent<CPlayerMovements>().isPlayerDead && !robotGotScore)
+                    {
+                        robotGotScore = true;
                         robotScore += (int)roundDuration;
+                    }
                     DrawScores();
                     if (nextSceneIndex == sceneRefs.Length - 1) { // if we have reached the end of our scenes
                         gameEnd = true;
