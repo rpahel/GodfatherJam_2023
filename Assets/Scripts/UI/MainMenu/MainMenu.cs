@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
@@ -142,6 +143,7 @@ public class MainMenu : MonoBehaviour
         controlsScreen.SetActive(true);
         yield return new WaitForSeconds(timeToWaitOnControlsScreen);
         // TODO : Passer à la premiere scene
+        SceneManager.LoadScene(1, LoadSceneMode.Single);
         Debug.Log("Start Game");
     }
 
