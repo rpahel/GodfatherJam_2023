@@ -1,5 +1,5 @@
 {
-    "name": "PlayerCharacterActions",
+    "name": "PlayersActions",
     "maps": [
         {
             "name": "Players",
@@ -58,7 +58,18 @@
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard & Mouse",
+                    "groups": "",
+                    "action": "RobotJump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "16a3fc13-47bb-46da-8b2b-a3562d9221dc",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "RobotJump",
                     "isComposite": false,
                     "isPartOfComposite": false
