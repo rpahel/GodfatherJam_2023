@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -5,8 +6,8 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] private float wheelScale, wheelImageSpinSpeed;
-    [SerializeField] private GameObject menuButtonPrefab;
+    [SerializeField] private float wheelScale, wheelImageSpinSpeed, timeToWaitOnControlsScreen;
+    [SerializeField] private GameObject menuButtonPrefab, controlsScreen;
     [SerializeField] private RectTransform carouselBoxTransform, wheelImageTransform;
     [SerializeField] private ButtonFunction[] buttonProperties;
     [SerializeField] private RectTransform[] menuButtonsPositions;
@@ -15,6 +16,7 @@ public class MainMenu : MonoBehaviour
     private Button[] buttons;
     private float currentScrollValue = 0;
     private int currentSelectedOption;
+    private Coroutine startCoroutine;
 
     private void Awake()
     {
@@ -67,11 +69,17 @@ public class MainMenu : MonoBehaviour
 
     public void Select(InputAction.CallbackContext context)
     {
+        if (controlsScreen.activeSelf)
+            return;
+
         buttons[currentSelectedOption].onClick.Invoke();
     }
 
     public void MenuScroll(InputAction.CallbackContext context)
     {
+        if (controlsScreen.activeSelf)
+            return;
+
         float value = context.ReadValue<float>();
         if (value == 0f)
             return;
@@ -123,7 +131,18 @@ public class MainMenu : MonoBehaviour
 
     public void StartGame()
     {
-        Debug.Log("The Game Starts.");
+        if (startCoroutine != null)
+            return;
+
+        startCoroutine = StartCoroutine(GameStartCoroutine());
+    }
+
+    private IEnumerator GameStartCoroutine()
+    {
+        controlsScreen.SetActive(true);
+        yield return new WaitForSeconds(timeToWaitOnControlsScreen);
+        // TODO : Passer à la premiere scene
+        Debug.Log("Start Game");
     }
 
     public void ToggleVolume()
