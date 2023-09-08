@@ -83,7 +83,7 @@ public class RoundManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Return))
+        if(Input.GetKeyDown(KeyCode.P))
         {
             Debug.Log("Quit");
             Application.Quit();

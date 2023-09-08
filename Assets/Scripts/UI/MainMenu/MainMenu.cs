@@ -27,6 +27,8 @@ public class MainMenu : MonoBehaviour
         }
 
         InitialiseButtons();
+
+        Cursor.visible = false;
     }
 
     private void InitialiseButtons()
