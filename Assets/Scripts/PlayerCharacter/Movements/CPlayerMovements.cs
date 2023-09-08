@@ -11,6 +11,7 @@ public class CPlayerMovements : MonoBehaviour
     [SerializeField, Tooltip("La force de saut du personnage.")]
     private float jumpForce;
 
+    public bool isPlayerDead = false;
     private float MovementInput { get; set; }
     private Rigidbody2D rb2D;
     public Rigidbody2D Rbobj => rb2D;
@@ -33,6 +34,8 @@ public class CPlayerMovements : MonoBehaviour
         if (!circleCollider)
             return;
 
+        if (transform.position.y <= -7)
+            isPlayerDead = true;
         if (MovementInput != 0 && Mathf.Abs(rb2D.velocity.x) < maxMovementSpeed)
             rb2D.velocity += new Vector2(MovementInput * acceleration * Time.deltaTime, 0);
     }
