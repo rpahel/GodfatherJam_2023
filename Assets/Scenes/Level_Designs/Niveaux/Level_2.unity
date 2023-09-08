@@ -984,6 +984,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1378558839593781384, guid: 2eb480f0f865e2f47943874672b8ea9c, type: 3}
+      propertyPath: clawMaxHealth
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 6482490368798763234, guid: 2eb480f0f865e2f47943874672b8ea9c, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
