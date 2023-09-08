@@ -13,7 +13,7 @@ public class CClaw : MonoBehaviour
     public float m_hSpeedScale = 5.0f;
     public float m_verticalBound = 3;
     public float m_horizontalBound = 10;
-    private float offsetHeld = -1;
+    public float offsetHeld = 0;
     public float storedEnergy = 0F;
     public float clawMaxHealth = 30;
     private float clawHealth;

@@ -53,6 +53,7 @@ MonoBehaviour:
   m_hSpeedScale: 1
   m_verticalBound: 3
   m_horizontalBound: 10
+  offsetHeld: -1.75
   storedEnergy: 0
   clawMaxHealth: 30
 --- !u!1 &655942943288167778
