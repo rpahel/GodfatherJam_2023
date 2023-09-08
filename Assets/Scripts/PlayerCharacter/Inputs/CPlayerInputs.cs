@@ -11,7 +11,7 @@ public class CPlayerInputs : MonoBehaviour
     private void Awake()
     {
         if (!TryGetComponent(out PlayerInput playerInput))
-            Debug.LogError("No PlayerInput found in " + name + " !");
+            Debug.LogError("ON S'EN FOUT : No PlayerInput found in " + name + " !");
             
         if (!TryGetComponent(out cPlayerMovements))
             Debug.LogError("No CPlayerMovements found in " + name + " !");

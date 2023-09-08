@@ -137,7 +137,6 @@ public class CClaw : MonoBehaviour
     public void OnClawMove(InputAction.CallbackContext context)
     {
         float delta = context.ReadValue<float>();
-        Debug.Log(delta);
 
 
         storedEnergy += (delta / Mathf.Abs(delta)) * 0.2F * Time.deltaTime;
