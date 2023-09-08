@@ -39,6 +39,12 @@ public class RoundManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
     
+    void OnLevelWasLoaded(int index)
+    {
+        go_player = GameObject.Find("PlayerCharacter");
+        ResetTimer();
+
+    }
     void ResetTimer()
     {
         clockTimeRemaining = roundDuration;
@@ -57,6 +63,7 @@ public class RoundManager : MonoBehaviour
 
     void LoadNextScene()
     {
+        go_player.GetComponent<CPlayerMovements>().isPlayerDead = false;
         isTransition = false;
         // reset timer
         Time.timeScale = 1;
@@ -69,11 +76,13 @@ public class RoundManager : MonoBehaviour
     void DrawScores()
     {
         scoreText.text = string.Format("P1:{0:0000}   P2:{1:0000}", clawScore, robotScore);
+        DisplayTime(clockTimeRemaining);
     }
 
     // Update is called once per frame
     void Update()
     {
+        DisplayTime(clockTimeRemaining);
         if (gameEnd == false)
         {
             if (go_player.GetComponent<CPlayerMovements>().isPlayerDead)
